@@ -1,0 +1,125 @@
+#include<list>
+#include <queue>
+#include<stdio.h>
+
+using namespace std;
+
+list<int> soma(list<int>, list<int>);
+list<int> subtracao(list<int>, list<int>);
+list<int> vezes10(list<int>*);
+
+void printNumber(list<int> N){
+    list<int>::iterator it;
+    for (it = N.begin(); it != N.end(); it++)
+    {
+        printf("%d", *it);
+    }
+    printf("\n");
+    
+}
+
+int main(){
+    list<int> N;
+    list<int> M;
+    //int V[] = {1,2,1,2,1,4,5,2,3,8,6,4,5,8,9,5,3,1,3,5,7,9,1,5,4,1,0,9,0,8,7,6,7};
+    int V[] = {1,9,1,1,1,5};//vetor do exercicio
+    int v[] = {1,5,1,4,1,6};// vetor teste
+    for (size_t i = 0; i < 6; i++)
+    {
+        N.push_back(V[i]);
+    }
+    for (size_t i = 0; i < 6; i++)
+    {
+        M.push_back(v[i]);
+    }
+    printNumber(N);
+    
+    list<int> C = soma(N, N);
+    printNumber(C);
+    
+    list<int> D = subtracao(C,N);
+    printNumber(D);
+}
+
+list<int> vezes10(list<int> *N){
+    (*N).push_back(0);
+    return (*N);
+}
+
+list<int> soma(list<int> A, list<int> B){
+    list<int> C;
+    list<int>::iterator itA;
+    list<int>::iterator itB;
+    int soma, x, y, aux=0;
+    
+    itA = A.end();
+    itB = B.end();
+
+    itA--;
+    itB--;
+
+    while(itA != A.begin()){
+        x = *itA;
+        y = *itB;
+        soma = x + y + aux;
+        aux = (soma > 9) ? 1 : 0;
+        C.push_front(soma%10);
+        itA--;
+        itB--;
+    }
+    x = *itA;
+    y = *itB;
+    soma = x + y + aux;
+    aux = (soma > 9) ? 1 : 0;
+    C.push_front(soma%10);
+    itA--;
+    itB--;
+    return C;
+}
+
+list<int> subtracao(list<int> A, list<int> B){
+    list<int> D;
+    list<int>::iterator itA;
+    list<int>::iterator itB;
+    int subtracao, x, y, aux=0;
+    
+    itA = A.end();
+    itB = B.end();
+
+    itA--;
+    itB--;
+
+    while(itA != A.begin()){
+        x = *itA;
+        y = *itB;
+        if (y > x){
+        itA--;
+        *itA-=1;
+        itA++;
+        x += 10;
+        }
+        subtracao = x - y;
+        D.push_front(subtracao);
+        itA--;
+        itB--;
+
+    }
+    x = *itA;
+    y = *itB;
+   if (B > A){
+        itA--;
+        x -= 1;
+        itA++;
+        x += 10;
+        subtracao = x - y;
+        D.push_front(subtracao);
+        itA--;
+        itB--;
+    }else{
+     subtracao = x - y;
+        D.push_front(subtracao);
+        itA--;
+        itB--;
+    }
+    return D;
+}
